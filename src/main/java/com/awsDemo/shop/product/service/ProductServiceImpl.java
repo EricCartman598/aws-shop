@@ -20,8 +20,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public String updateProductById(String id) {
-//        productRepository.updateById(Long.parseLong(id));
-        return "Ok";
+    public String addProduct(Product product) {
+        if(productRepository.save(product) != null) {
+            return "New product has been added to database";
+        }
+        else {
+            return "Error while adding a new product to database!";
+        }
     }
 }

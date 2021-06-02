@@ -1,11 +1,9 @@
 package com.awsDemo.shop.product.controller;
 
+import com.awsDemo.shop.product.domain.Product;
 import com.awsDemo.shop.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ProductController {
@@ -21,8 +19,8 @@ public class ProductController {
         return productService.getProductById(id).toString();
     }
 
-    @PutMapping("product/{id}/add")
-    public String updateProduct(@PathVariable String id) {
-        return productService.updateProductById(id);
+    @PutMapping("product/add")
+    public String updateProduct(@RequestBody Product product) {
+        return productService.addProduct(product);
     }
 }
