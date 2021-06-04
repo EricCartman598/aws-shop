@@ -14,6 +14,11 @@ public class ProductController {
         this.productService = productService;
     }
 
+    @GetMapping("/")
+    public String getGreeting() {
+        return "Hello from Spring boot app!";
+    }
+
     @GetMapping("product/{id}")
     public String getProduct(@PathVariable String id) {
         return productService.getProductById(id).toString();
