@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aws-shop-deployment
+  labels:
+    app: aws-shop
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: aws-shop
+  template:
+    metadata:
+      labels:
+        app: aws-shop
+    spec:
+      containers:
+      - name: aws-shop
+        image: ericcartman598/aws-shop:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: regcred

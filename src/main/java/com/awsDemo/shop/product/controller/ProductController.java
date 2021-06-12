@@ -16,7 +16,7 @@ public class ProductController {
 
     @GetMapping("/")
     public String getGreeting() {
-        return "Hello from Spring boot app!";
+        return "Hello from Spring boot. This is the LATEST version";
     }
 
     @GetMapping("product/{id}")
