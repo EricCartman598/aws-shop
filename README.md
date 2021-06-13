@@ -6,7 +6,7 @@ To create and push docker image:
 sudo docker build -t aws-shop:<version> .
 
 2. Rename docker image:
-sudo docker tag aws-shop:v3 ericcartman598/aws-shop:<version>
+sudo docker tag aws-shop:<version> ericcartman598/aws-shop:<version>
 
 3. Push the image to Docker Hub
 sudo docker push ericcartman598/aws-shop:<version>
