@@ -16,7 +16,7 @@ public class ProductController {
 
     @GetMapping("/")
     public String getGreeting() {
-        return "<h2>Hello from Spring boot. <br/><p style=\"color:green\">The latest version</p></h2>";
+        return "<h2>Hello from Spring boot. <br/><p style=\"color:red\">This is the latest version</p></h2>";
     }
 
     @GetMapping("product/{id}")
