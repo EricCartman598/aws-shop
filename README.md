@@ -31,3 +31,9 @@ to get pods list run the command "kubectl get pods"
 
 5. Create service of LoadBalancer type
 kubectl apply -f service.yaml
+
+To install docker:
+sudo yum install docker -y
+sudo service docker start
+sudo docker login 
+sudo docker run -d -p1234:8080 ericcartman598/aws-shop:latest
