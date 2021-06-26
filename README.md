@@ -37,3 +37,10 @@ sudo yum install docker -y
 sudo service docker start
 sudo docker login 
 sudo docker run -d -p1234:8080 ericcartman598/aws-shop:latest
+to mount folder to container: sudo docker run -d -p 1234:8080 -v /home/ec2-user/aws-shop-logs:/usr/local/tomcat/logs ericcartman598/aws-shop:latest
+
+To CloudWatch:
+1. Install CloudWatch agent to the instance: sudo yum install amazon-cloudwatch-agent
+2. Configure agent: sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-config-wizard
+3. Run agent: sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json -s
+4. Check agent's status: sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -m ec2 -a status

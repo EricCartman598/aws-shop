@@ -1,5 +1,6 @@
 package com.awsDemo.shop.product.controller;
 
+import com.amazonaws.xray.spring.aop.XRayEnabled;
 import com.awsDemo.shop.product.domain.Product;
 import com.awsDemo.shop.product.service.ProductService;
 import org.slf4j.Logger;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
+@XRayEnabled
 public class ProductController {
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
     private final ProductService productService;
@@ -20,7 +22,9 @@ public class ProductController {
 
     @GetMapping("/")
     public String getGreeting() {
-        return "<h2>Hello from Spring boot. <br/><p style=\"color:red\">This is the latest version</p></h2>";
+        logger.debug("access to main page");
+
+        return "<h2>Hello from Spring boot. <br/><p style=\"color:green\">This is the latest version</p></h2>";
     }
 
     @GetMapping("product/{id}")

@@ -27,7 +27,8 @@ pipeline {
         }
         stage('publish') {
             steps {
-                sh "sudo cp /var/lib/jenkins/workspace/pipelineJob/target/awsShop.war /home/vitalii/Docker/awsShop.war"
+                sh "sudo cp /var/lib/jenkins/workspace/BuildAndDeployAwsShop/Dockerfile /home/vitalii/Docker/Dockerfile"
+                sh "sudo cp /var/lib/jenkins/workspace/BuildAndDeployAwsShop/target/awsShop.war /home/vitalii/Docker/awsShop.war"
                 sh "sudo docker build -t ericcartman598/aws-shop:latest /home/vitalii/Docker"
                 sh "sudo docker push ericcartman598/aws-shop:latest"
             }
