@@ -24,7 +24,7 @@ public class ProductController {
     public String getGreeting() {
         logger.debug("access to main page");
 
-        return "<h2>Hello from Spring boot. <br/><p style=\"color:green\">This is the latest version</p></h2>";
+        return "<h2>Hello from Spring boot. <br/><p style=\"color:blue\">This is the latest version</p></h2>";
     }
 
     @GetMapping("product/{id}")
