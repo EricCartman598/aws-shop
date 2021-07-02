@@ -26,11 +26,10 @@ public class ProductServiceImplTest {
 
     @Test
     public void testGetProduct_returnValidProduct() {
-        Product product = new Product(10L, "Coffee", 450L);
-        Mockito.when(productRepository.findById(10L)).thenReturn(Optional.of(product));
+        Product product = new Product("10", "Coffee", "450");
+        Mockito.when(productRepository.getProductById("10")).thenReturn(Optional.of(product));
         Product obtainedProduct = productService.getProductById("10");
-        assertEquals(10L, product.getId());
-        assertEquals("Coffee", product.getName());
-        assertEquals(450L, product.getPrice());
+        assertEquals(product, obtainedProduct);
+        assertNotEquals(new Product("11", "Tea", "380"), obtainedProduct);
     }
 }
