@@ -1,6 +1,5 @@
 package com.awsDemo.shop.product.controller;
 
-import com.amazonaws.xray.spring.aop.XRayEnabled;
 import com.awsDemo.shop.product.domain.Product;
 import com.awsDemo.shop.product.service.ProductService;
 import org.slf4j.Logger;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@XRayEnabled
 public class ProductController {
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
     private final ProductService productService;

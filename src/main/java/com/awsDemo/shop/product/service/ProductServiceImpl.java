@@ -16,12 +16,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getProductById(String id) {
-        return productRepository.findById(Long.parseLong(id)).orElseThrow(() -> new RuntimeException("Product not found!"));
+        return productRepository.getProductById(id).orElseThrow(() -> new RuntimeException("Product not found!"));
     }
 
     @Override
     public String addProduct(Product product) {
-        if(productRepository.save(product) != null) {
+        if(productRepository.addProduct(product) != null) {
             return "New product has been added to database";
         }
         else {
