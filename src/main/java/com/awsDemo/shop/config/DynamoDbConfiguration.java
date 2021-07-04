@@ -6,20 +6,23 @@ import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import io.fabric8.kubernetes.api.model.Secret;
+import io.fabric8.kubernetes.api.model.SecretList;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.List;
+import java.util.Optional;
+
 @Configuration
 public class DynamoDbConfiguration {
-
-    @Value("${secret.accessKey}")
-    private String accessKey;
-
-    @Value("${secret.secretKey}")
-    private String secretKey;
 
     @Bean
     public DynamoDBMapper dynamoDBMapper() {
@@ -27,13 +30,11 @@ public class DynamoDbConfiguration {
     }
 
     private AmazonDynamoDB getAmazonDynamoDBClient() {
-        KubernetesClient client = new DefaultKubernetesClient();
-        client.secrets();
-        /*
-            https://developers.redhat.com/blog/2020/05/20/getting-started-with-the-fabric8-kubernetes-java-client#using_fabric8_with_kubernetes
-            https://developers.redhat.com/blog/2017/10/04/configuring-spring-boot-kubernetes-secrets#setup
-            https://developers.redhat.com/blog/2017/10/03/configuring-spring-boot-kubernetes-configmap
-         */
+        String accessKey = getSecretValueByKey(getSecret("dynamo-db-credentials")
+                .orElseThrow(RuntimeException::new), "accessKey");
+        String secretKey = getSecretValueByKey(getSecret("dynamo-db-credentials")
+                .orElseThrow(RuntimeException::new), "secretKey");
+
         return AmazonDynamoDBClientBuilder
                 .standard()
                 .withEndpointConfiguration(
@@ -51,5 +52,23 @@ public class DynamoDbConfiguration {
                         )
                 )
                 .build();
+    }
+
+    private Optional<Secret> getSecret(String secretName) {
+        KubernetesClient client = new DefaultKubernetesClient();
+        MixedOperation<Secret, SecretList, Resource<Secret>> secrets = client.secrets();
+        List<Secret> items = secrets.list().getItems();
+
+        for (Secret secret : items) {
+            if (secret.getMetadata().getName().equals(secretName)) {
+                return Optional.of(secret);
+            }
+        }
+        return Optional.empty();
+    }
+
+    private String getSecretValueByKey(Secret secret, String key) {
+        String encodedValue = secret.getData().get(key);
+        return new String(Base64.getDecoder().decode(encodedValue));
     }
 }
