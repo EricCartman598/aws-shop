@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ProductController {
-    private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
     private final ProductService productService;
 
     @Autowired
@@ -20,21 +20,21 @@ public class ProductController {
 
     @GetMapping("/")
     public String getGreeting() {
-        logger.debug("access to main page");
+        LOGGER.debug("access to main page");
 
         return "<h2>Hello from Spring boot. <br/><p style=\"color:blue\">This is the latest version</p></h2>";
     }
 
     @GetMapping("product/{id}")
     public String getProduct(@PathVariable String id) {
-        logger.debug("get product with id = " + id);
+        LOGGER.debug("get product with id = " + id);
 
         return productService.getProductById(id).toString();
     }
 
     @PutMapping("product/add")
     public String updateProduct(@RequestBody Product product) {
-        logger.debug("add new product: " + product.toString());
+        LOGGER.debug("add new product: " + product.toString());
 
         return productService.addProduct(product);
     }

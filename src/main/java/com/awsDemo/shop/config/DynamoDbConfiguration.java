@@ -12,11 +12,9 @@ import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +32,7 @@ public class DynamoDbConfiguration {
                 .orElseThrow(RuntimeException::new), "accessKey");
         String secretKey = getSecretValueByKey(getSecret("dynamo-db-credentials")
                 .orElseThrow(RuntimeException::new), "secretKey");
+
 
         return AmazonDynamoDBClientBuilder
                 .standard()
