@@ -25,7 +25,7 @@ dockerhub username&gt; --docker-password=&lt;your dockerhub password&gt; --docke
 3. Create a deployment:
 kubectl apply -f deployment.yaml
 
-4. OPTIONAL: You can Сheck how you pods work by creatmg port-forwarding and access to a pod:
+4. OPTIONAL: You can check how your pods work by creating port-forwarding and access to a pod:
 kubectl port-forward &lt;your pod name&gt; 1234:8080
 to get pods list run the command "kubectl get pods"
 
@@ -44,3 +44,7 @@ To CloudWatch:
 2. Configure agent: sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-config-wizard
 3. Run agent: sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json -s
 4. Check agent's status: sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -m ec2 -a status
+
+To DynamoDb:
+1. To add your credentials to Kubernetes cluster: 
+kubectl create secret generic dynamo-db-credentials --from-literal=accessKey=&lt;accessKey&gt; --from-literal=secretKey=&lt;secretKey&gt;
