@@ -6,21 +6,25 @@ import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import io.fabric8.kubernetes.api.model.Secret;
-import io.fabric8.kubernetes.api.model.SecretList;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.MixedOperation;
-import io.fabric8.kubernetes.client.dsl.Resource;
+import com.google.common.io.Files;
+import org.apache.logging.log4j.util.Strings;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Base64;
-import java.util.List;
-import java.util.Optional;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 @Configuration
 public class DynamoDbConfiguration {
+    private static final String K8S_SECRETS_PATH = "/etc/secret-volume";
+
+    @Value("${db.url}")
+    private String dbUrl;
+
+    @Value("${cloud.aws.region.static}")
+    private String region;
 
     @Bean
     public DynamoDBMapper dynamoDBMapper() {
@@ -28,18 +32,15 @@ public class DynamoDbConfiguration {
     }
 
     private AmazonDynamoDB getAmazonDynamoDBClient() {
-        String accessKey = getSecretValueByKey(getSecret("dynamo-db-credentials")
-                .orElseThrow(RuntimeException::new), "accessKey");
-        String secretKey = getSecretValueByKey(getSecret("dynamo-db-credentials")
-                .orElseThrow(RuntimeException::new), "secretKey");
-
+        String accessKey = getSecret("accessKey");
+        String secretKey = getSecret("secretKey");
 
         return AmazonDynamoDBClientBuilder
                 .standard()
                 .withEndpointConfiguration(
                         new AwsClientBuilder.EndpointConfiguration(
-                                "dynamodb.eu-central-1.amazonaws.com",
-                                "eu-central-1"
+                                dbUrl,
+                                region
                         )
                 )
                 .withCredentials(
@@ -53,21 +54,14 @@ public class DynamoDbConfiguration {
                 .build();
     }
 
-    private Optional<Secret> getSecret(String secretName) {
-        KubernetesClient client = new DefaultKubernetesClient();
-        MixedOperation<Secret, SecretList, Resource<Secret>> secrets = client.secrets();
-        List<Secret> items = secrets.list().getItems();
-
-        for (Secret secret : items) {
-            if (secret.getMetadata().getName().equals(secretName)) {
-                return Optional.of(secret);
-            }
+    private String getSecret(String secretName) {
+        String secret = Strings.EMPTY;
+        File accessKeyFile = new File(K8S_SECRETS_PATH + "/" + secretName);
+        try {
+            secret = Files.readLines(accessKeyFile, StandardCharsets.UTF_8).get(0);
+        } catch (IOException e) {
+            new RuntimeException("No secret has been found!");
         }
-        return Optional.empty();
-    }
-
-    private String getSecretValueByKey(Secret secret, String key) {
-        String encodedValue = secret.getData().get(key);
-        return new String(Base64.getDecoder().decode(encodedValue));
+        return secret;
     }
 }
