@@ -6,23 +6,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
 
 @Repository
 @Primary
+//@CacheConfig(cacheNames = "awsshopelasticache")
 public class ProductDynamoDbRepositoryImpl implements ProductRepository {
     @Autowired
     private DynamoDBMapper dynamoDBMapper;
 
     @Override
+//    @CachePut
     public Product addProduct(Product product) {
         dynamoDBMapper.save(product);
         return product;
     }
 
     @Override
-    public Optional<Product> getProductById(String id) {
+//    @Cacheable
+    public Product getProductById(String id) {
         System.out.println("getting from DB");
-        return Optional.of(dynamoDBMapper.load(Product.class, id));
+        return dynamoDBMapper.load(Product.class, id);
     }
 }

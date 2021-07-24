@@ -27,7 +27,7 @@ public class ProductServiceImplTest {
     @Test
     public void testGetProduct_returnValidProduct() {
         Product product = new Product("10", "Coffee", "450");
-        Mockito.when(productRepository.getProductById("10")).thenReturn(Optional.of(product));
+        Mockito.when(productRepository.getProductById("10")).thenReturn(product);
         Product obtainedProduct = productService.getProductById("10");
         assertEquals(product, obtainedProduct);
         assertNotEquals(new Product("11", "Tea", "380"), obtainedProduct);

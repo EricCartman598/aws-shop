@@ -3,6 +3,8 @@ package com.awsDemo.shop.product.service;
 import com.awsDemo.shop.product.dao.ProductRepository;
 import com.awsDemo.shop.product.domain.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,7 +18,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getProductById(String id) {
-        return productRepository.getProductById(id).orElseThrow(() -> new RuntimeException("Product not found!"));
+        return productRepository.getProductById(id);
     }
 
     @Override

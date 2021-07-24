@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface ProductRepository {
     Product addProduct(Product product);
-    Optional<Product> getProductById(String id);
+    Product getProductById(String id);
 }
