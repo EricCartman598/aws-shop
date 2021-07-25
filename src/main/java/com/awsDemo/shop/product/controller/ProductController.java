@@ -22,7 +22,7 @@ public class ProductController {
     public String getGreeting() {
         LOGGER.debug("access to main page");
 
-        return "<h2>Hello from Spring boot. <br/><p style=\"color:green\">This app works within ECS cluster</p></h2>";
+        return "<h2>Hello from Spring boot. <br/><p style=\"color:red\">This app works within ECS cluster</p></h2>";
     }
 
     @GetMapping("product/{id}")

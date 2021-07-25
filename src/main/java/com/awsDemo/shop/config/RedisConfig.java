@@ -21,7 +21,7 @@ import redis.clients.jedis.JedisPoolConfig;
 
 @Configuration
 //@EnableCaching
-@EnableElastiCache({@CacheClusterConfig(name = "awsshopelasticache")})
+//@EnableElastiCache({@CacheClusterConfig(name = "awsshopelasticache")})
 public class RedisConfig {
 
     @Value("${spring.redis.host}")

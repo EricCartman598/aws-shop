@@ -38,8 +38,6 @@ public class DynamoDbConfiguration {
     }
 
     private AmazonDynamoDB getAmazonDynamoDBClient() {
-//        String accessKey = getK8sSecret("accessKey");
-//        String secretKey = getK8sSecret("secretKey");
         String accessKey = getSecret("accessKey");
         String secretKey = getSecret("secretKey");
         return AmazonDynamoDBClientBuilder
