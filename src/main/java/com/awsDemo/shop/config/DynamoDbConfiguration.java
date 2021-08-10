@@ -65,7 +65,7 @@ public class DynamoDbConfiguration {
         try {
             secret = Files.readLines(accessKeyFile, StandardCharsets.UTF_8).get(0);
         } catch (IOException e) {
-            new RuntimeException("No secret has been found!");
+            throw new RuntimeException("No secret has been found!");
         }
         return secret;
     }
